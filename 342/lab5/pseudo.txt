@@ -1,0 +1,1833 @@
+ /**=============================================================================
+  *==============================================================================
+  *	@file 	DesignForLab5
+  *	@author Terence Schumacher
+  *	@author Dominic Badzik
+  ==============================================================================*	
+ ==============================================================================*/
+ 
+  /**===========================================================================
+	@file Node.h
+	@author Terence Schumacher
+	@version 1.2
+*===============================================================================*/
+struct intData{
+	int item;
+	int frequency;
+
+	intData(){
+		item = -1;
+		frequency = 0;
+	}//end constructor
+};//end intData
+
+struct stringData{
+	string stringItem;
+	int frequency;
+
+	stringData() {
+		stringItem = "";
+		frequency = 0;
+	}//end constructor
+};//end stringData
+
+class Node {
+private:
+	intData dataItem;
+	stringData stringDataItem;
+
+	Node * leftChildPtr;
+	Node * rightChildPtr;
+	bool leftThread;
+	bool rightThread;
+
+public:
+	Node();
+	Node(int item);
+	Node(string item);
+	Node(int item, Node * left, Node * right, bool leftT, bool rightT);
+	Node( Node *& copyNode);
+	~Node();
+
+	int getItem();
+	string getString();
+	Node * getLeftPtr();
+	Node * getRightPtr();
+	bool getLeftThread();
+	bool getRightThread();
+	int getFrequency();
+
+	int getStringFrequency();
+	void clear();
+	void increaseFreq();
+	void decreaseFreq();
+	void increaseStringFreq();
+	void decreaseStringFreq();
+
+	void setItem(int newItem);
+	void setItem(string newString);
+	void setLeftPtr(Node * newLeft);
+	void setRightPtr(Node * newRight);
+	void setLeftThread(bool conclusion);
+	void setRightThread(bool conclusion);
+	void setFrequency(int newFreq);
+	void setStringFrequency(int newFreq);
+
+	Node* operator=( Node& rightHandSide);
+	bool operator<(Node& rightHandSide);
+	bool operator>(Node& rightHandSide);
+
+	bool hasData();
+	bool hasString();
+	bool hasInt();
+	bool hasOnlyLeftChild();
+	bool hasOnlyRightChild();
+	bool hasTwoChildren();
+	bool hasNoChildren();
+	bool isLeftChild();
+	bool isRightChild();
+	bool isLeaf();
+
+	void printNode(Node * printNode);
+
+};//end Node
+
+  /**===========================================================================
+	@file Node.cpp
+	@author Terence Schumacher
+	@version 1.2
+*=============================================================================*/
+
+//====constructors
+
+/** Default Constructor
+*/
+Node::Node(): leftChildPtr(NULL), rightChildPtr(NULL), leftThread(false),
+		rightThread(false)
+{
+	dataItem.frequency = 0;
+	dataItem.item = -1;
+	stringDataItem.stringItem = "";
+	stringDataItem.frequency = 0;
+}//end default constructor
+
+/** Item Constructor
+	@param item value to construct  Node with
+*/
+Node::Node(int item) : leftChildPtr(NULL), rightChildPtr(NULL),
+				leftThread(false), rightThread(false)
+{
+	dataItem.item = item;
+	dataItem.frequency = 1;
+}//end Constructor
+
+Node::Node(string item): leftChildPtr(NULL), rightChildPtr(NULL),
+				leftThread(false), rightThread(false)
+{
+	stringDataItem.stringItem = item;
+	stringDataItem.frequency = 1;
+
+}//end constructor
+
+/** Full Constructor
+	@param item value to construct  Node with
+	@param left child on the left
+	@param right child on the right
+	@param leftT state of left thread
+	@param rightT state of right thread
+*/
+Node::Node(int item, Node * left, Node * right, bool leftT, bool rightT){
+	dataItem.item = item;
+	dataItem.frequency = 1;
+	
+	leftChildPtr = left;
+	rightChildPtr = right;
+	
+	leftThread = leftT;
+	rightThread = rightT;
+}//end fullConstructor
+
+/** Copy Constructor
+	@param copyNode node to copy
+*/
+Node::Node( Node *& copyNode){
+
+	setItem(copyNode->getItem());
+	setFrequency(copyNode->getFrequency());
+	
+	setItem(copyNode->getString());
+	setStringFrequency(copyNode->getStringFrequency());
+
+	setLeftPtr(copyNode->getLeftPtr());
+	setRightPtr(copyNode->getRightPtr());
+
+	setLeftThread(copyNode->getLeftThread());
+	setRightThread(copyNode->getRightThread());
+
+}//end Copy Constructor
+
+Node::~Node(){	
+	this->clear();
+	delete leftChildPtr;
+	leftChildPtr = NULL;
+	delete rightChildPtr;
+	rightChildPtr = NULL;
+
+}//end destructor
+
+
+//====getters
+
+/** Get Item
+	@return value contained in the Data struct
+*/
+int Node::getItem(){
+	return dataItem.item;
+}//end getItem
+
+string Node::getString(){
+	return stringDataItem.stringItem;
+}//end getString
+
+/** Get Left Pointer (Child)
+	@return location of left child
+*/
+Node * Node::getLeftPtr(){
+	return leftChildPtr;
+}//end getLeftPtr
+
+/** Get Right Pointer (Child)
+	@return location of right child
+*/
+Node * Node::getRightPtr(){
+	return rightChildPtr;
+}//end getRightPtr
+
+/** Get Left Thread
+	@return true if left threaded, false otherwise
+*/
+bool Node::getLeftThread(){
+	return leftThread;
+}//end getLeftThread
+
+/** Get Right Thread
+	@return true if right threaded, false otherwise
+*/
+bool Node::getRightThread(){
+	return rightThread;
+}//end getRightThread
+
+/** Get Frequency
+	@return frequency count of item in the Data struct
+*/
+int Node::getFrequency(){
+	return dataItem.frequency;
+}//end getFrequency
+
+ /** Get String Frequency
+*/
+int Node::getStringFrequency() {
+	return stringDataItem.frequency;
+}//end getStringFrequency
+//====setters
+
+/** Print Node
+	@brief prints node info for test data
+	@param printNode node to obtain information to print
+*/
+void Node::printNode(Node * printNode){
+
+	cout << "Node Description: " << endl << endl;
+	cout << "Data Item--" << printNode->dataItem.item << endl;
+	cout << "Frequency--" << printNode->dataItem.frequency << endl;
+	cout << "Left Child--" << printNode->leftChildPtr << endl;
+	cout << "Right Child--" << printNode->rightChildPtr << endl;
+	cout << "Left Thread--" << printNode->leftThread << endl;
+	cout << "Right Thread--" << printNode->rightThread << endl;
+
+}//end printNode
+
+
+/** Clear
+	@brief clears the node
+*/
+void Node::clear(){
+	dataItem.item = -1;
+	dataItem.frequency = 0;
+	stringDataItem.stringItem = " ";
+	stringDataItem.frequency = 0;
+	leftChildPtr = NULL;
+	rightChildPtr = NULL;
+	leftThread = false;
+	rightThread = false;
+}//end clear
+
+/** Increase Freq
+	@brief increases frequency
+*/
+void Node::increaseFreq(){
+	dataItem.frequency++;
+}//end increaseFreq
+
+/** Decrease Freq
+	@brief decreases frequency
+*/
+void Node::decreaseFreq(){
+	dataItem.frequency--;
+}//end decreaseFreq
+
+	/** Increase Freq
+	@brief increases frequency
+*/
+void Node::increaseStringFreq(){
+	stringDataItem.frequency++;
+}//end increaseFreq
+
+/** Decrease Freq
+	@brief decreases frequency
+*/
+void Node::decreaseStringFreq(){
+	stringDataItem.frequency--;
+}//end decreaseFreq
+
+/** Set Item
+	@param newItem value to set
+*/
+void Node::setItem(int newItem){
+	dataItem.item = newItem;
+}//end setItem
+
+void Node::setItem(string newString){
+	stringDataItem.stringItem = newString;
+}//end setItem
+
+/** Set Left Pointer (Child)
+	@param newLeft new left child
+*/
+void Node::setLeftPtr(Node * newLeft){
+	leftChildPtr = newLeft;
+}//end setLeftPtr
+
+/** Set Right Pointer (Child)
+	@param newRight new right child
+*/
+void Node::setRightPtr(Node * newRight){
+	rightChildPtr = newRight;
+}//end setRightPtr
+
+/** Set Left Thread
+	@param conclusion sets whether threaded or not
+*/
+void Node::setLeftThread(bool conclusion){
+	leftThread = conclusion;
+}//end setLeftThread
+
+/** Set Right Thread
+	@param conclusions sets whether threaded or not
+*/
+void Node::setRightThread(bool conclusion){
+	rightThread = conclusion;
+}//end setRightThread
+
+/** Set Frequency
+	@param newFreq update the frequency
+*/
+void Node::setFrequency(int newFreq){
+	dataItem.frequency = newFreq;
+}//end setFrequency
+
+/** Set String Frequency
+ */
+void Node::setStringFrequency(int newFrequency){
+	stringDataItem.frequency = newFrequency;
+}//end setStringFrequency
+//====operators
+
+/** = Operator
+	@brief assignment operator for nodes
+	@param rightHandSide the node to set this to
+	@return copy of rightHandSide
+*/
+Node* Node::operator=( Node& rightHandSide) {
+	this->clear();
+
+	this->setFrequency(rightHandSide.getFrequency());
+	this->setItem(rightHandSide.getItem());
+	this->setLeftPtr(rightHandSide.getLeftPtr());
+	this->setRightPtr(rightHandSide.getRightPtr());
+	this->setLeftThread(rightHandSide.getLeftThread());
+	this->setRightThread(rightHandSide.getRightThread());
+
+	return this;
+}//end operator=
+
+/** < operator
+	@brief comparison of less than
+	@return true if less than, false otherwise
+*/
+bool Node::operator<(Node& rightHandSide){
+return (this Item() < rightHandSide Item());
+}//end operator<
+
+/** > operator
+	@brief comparison of greater than
+	@return true if greater than, false otherwise
+*/
+bool Node::operator>(Node& rightHandSide){
+return (this Item() > rightHandSide Item());
+}//end operator>
+
+//====comparisons
+
+/** Is Leaf
+	@return true of right and left ptr null, false otherwise
+*/
+bool Node::isLeaf(){
+	return (( LeftThread()) && ( RightThread()));
+}//end isLeaf
+
+/** Has Only Left Child
+	@return true if right child null and left child not, false otherwise
+*/
+bool Node::hasOnlyLeftChild(){
+	return ((leftChildPtr != NULL) && (RightThread()) && ( not LeftThread()));
+}//end hasOnlyLeftChild
+
+/** Has Only Right Child
+	@return true if left child null and right child not, false otherwise
+*/
+bool Node::hasOnlyRightChild(){
+	return ((rightChildPtr != NULL) && (LeftThread()) && ( not RightThread()));
+}//end hasOnlyRightChild
+
+bool Node::hasNoChildren(){
+	return ((getRightThread())&&(getLeftThread()));
+} //hasNoChildren
+
+bool Node::hasTwoChildren() {
+	return ((gRightPtr() != NULL) && (LeftPtr() != NULL) && 
+			(not RightThread()) && ( not LeftThread()));
+}//end hasTwoChildren
+
+/** Has Data
+	@return true if data present, false otherwise
+*/
+bool Node::hasData(){
+	return ((dataItem item != -1)|| stringDataItem stringItem != "");
+}//end hasData
+
+ /** Has String
+	@brief checks to see if there's a string in the Node
+	@return true if string present, false otherwise
+ */
+bool Node::hasString(){
+	return ((stringDataItem frequency != 0) && (stringDataItem stringItem != " "));
+}//end hasString
+
+ /** Has Int
+	@brief checks to see if there's an integer in the Node
+	@return true if integer present, false otherwise
+ */
+bool Node::hasInt(){
+	return ((dataItem frequency != 0) && (dataItem item != -1));
+}//end hasString
+
+
+ /**============================================================================
+	@file List.h
+	@author Terence Schumacher
+	@author Dominic Badzik
+	@version 1.4
+ =============================================================================*/
+
+class List{
+protected:
+	friend ostream& operator<<(ostream& output, List& printList);
+private:
+	Node * head;
+	Node * tail;
+	void printDetails(Node * current);
+public:
+	int size;
+	List();
+	List(Node * headEntry);
+	List(List& baseList);
+	List(ifstream& inFile);
+	List(int newItem);
+	~List();
+	
+	Node * getHead();
+	Node * getTail();
+
+	bool isEmpty();
+	bool isInList(const int & selectedEntry);
+	void clear();
+
+	bool insert(Node * insertNode);
+	bool insert(int numberToInsert);
+	bool insertFreqs(Node * insertNode);
+	bool insertStrFreqs(Node * insertNode);
+	bool insert(string newEntry);
+	bool remove(int nodeKey);
+
+	ostream& printList(ostream& output, List &printList);
+	void printN(int cycleCount, List  &printableList);
+
+};//end List
+
+ /**=============================================================================
+	@file List.cpp
+	@author Terence Schumacher
+	@author Dominic Badzik
+	@version 1.4
+===============================================================================*/
+
+ /** Constructor
+	@brief default constructor
+*/
+List::List() : head(NULL), size(0)
+{
+}//end constructor
+
+ /** Constructor
+	@brief constructor with new head value
+	@param newHead node for the new list's head
+*/
+List::List(Node * newHead): head(NULL), size(0){
+	newHead->setLeftPtr(head);
+	head = newHead;
+	size = 1;
+}//end constructor
+
+ /** Constructor 
+	@brief constructor for testing list creation
+	@param newItem integer inserted into a listNode
+*/
+List::List(int newItem): head(NULL), size(0){
+	Node * newNode = new Node();
+	newNode->setItem(newItem);
+	newNode->setLeftPtr(head);
+	head = newNode;
+	size = 1;
+}//end constructor
+
+ /** Copy Constructor
+	@brief copies the contents of the base list into a new list
+	@param baseList the list to copy
+*/
+List::List( List& baseList) : head(NULL), size(0){
+
+	set current node to head of base list
+	while (baseList not empty){
+
+		insert(current itme)		
+		move to next node
+	}//end while
+
+}//end copy Constructor
+
+ /** Constructor of list from inFile
+  *  @brief create a list from a .txt file
+  *  @param inFile .txt file read in
+ */
+List::List(ifstream& inFile){
+	
+	bool buildingWord = false;
+	bool buildingNumber = false;
+	string curString;
+
+	// while the stream is open for reading
+	while (inFile not equal to End of File) {
+		char curChar;
+		// read a single character into curChar
+		curChar = read a single character
+
+		if ((curChar >= 'A' && curChar <= 'Z') || (curChar >= 'a' && curChar <= 'z')) {
+			// if it is a letter
+			if (!buildingWord) {
+				// insert the current string that was being built (unless it's empty)
+				//insertAddition(curString, this);
+				
+				if (curString not empty)
+					insert the current string
+				clear the string
+				buildingWord = true;
+				buildingNumber = false;
+			
+			}//end if !building Word
+			
+			add the char to the string
+		
+		}//end if a letter
+
+		else if (curChar >= '0' && curChar <= '9') {
+		
+			if (!buildingNumber) {
+				// insert the current string that was being built
+				//insertAddition(curString, this);
+				
+				insert current string
+				clear the string
+				buildingWord = false;
+				buildingNumber = true;
+			}
+			
+			add the char to the string
+		}
+		else {
+			// else it is a symbol
+			// insert the current string that was being built
+			//insertAddition(curString, this);
+
+			if (curString not empty){
+				insert current string
+			}
+			clear the string
+
+			buildingWord = false;
+			buildingNumber = false;
+
+			if (curChar >= '!' && curChar <= '~') {
+				add the char to the string
+			}//end if a character
+		}//end if
+	}//end while the infile is good
+
+}//end constructor
+
+ /** Destructor
+	@brief Returns memory to the heap
+*/
+List::~List(){
+	//this is the cause of memory leaks 2/28 @ 2:48PM
+	this->clear();
+}//end destructor
+
+ /** Is Empty
+	@brief checks to see if the list is empty
+	@return true if list is empty, false otherwise
+*/
+bool List::isEmpty(){
+
+	return (size == 0);
+
+}//end isEmpty
+
+ /** Get Head
+	@brief returns the value located at head pointer
+	@pre method must be called on a valid list
+	@return the Head Pointer
+*/
+Node * List::getHead() {
+	return head;
+}//end getHead
+
+ /** Get Tail
+ */
+Node * List::getTail() {
+	return tail;
+}//end getTail
+
+ /** Is in List
+	@brief checks whether an integer is in the list
+	@param selectedEntry the number to search for
+	@return true if found, false otherwise
+*/
+bool List::isInList(const int & selectedEntry){
+	create current node = to head
+
+	while (current != NULL){
+		if (current->getItem() == selectedEntry)
+		{
+			return true;
+		}
+		else {
+			move on to the next node
+		}
+	}//end while
+
+	return false;
+}//end isInSet
+
+ /** Insert
+	@brief inserts a node at the end of the list
+	@param newEntry the value to be inserted
+	@return true if entry is successfull
+*/
+bool List::insert(const int newEntry){
+
+	create a new node
+	set the item to newEntry
+
+	if (this->isEmpty()){
+		set the new node to the head
+		increase the size
+		return true;
+	}
+	else
+	{
+	Node * current = head;
+	Node * previous = NULL;
+
+	while ((current != NULL)&&(current item < newEntry ))
+	{	
+		move left()
+	}//end while
+	
+	if (current != NULL){
+		if (head->getItem() == current->getItem()){
+			
+			set new node's next pointer to head
+			set head = newNode
+			increase the size
+			return true;
+		}//end if
+		
+		insert in the middle
+		
+		return true;
+	} 
+	else if (current == NULL){
+		set the last node's next pointer to the new node
+		increase size
+		return true;
+	}//end if
+	else
+		increase frequency of entry
+		delete new node
+		
+		return true;
+	}//end if 
+
+	// if something went wrong
+	return false;
+
+}//end insert
+
+ /** Insert
+	@brief inserts a node at the end of the list
+	@param newEntry the value to be inserted
+	@return true if entry is successfull
+*/
+bool List::insertStrFreqs(Node * insertNode){
+	
+	create a new node as a copy of insertNode
+	assert new node and insert node are equal
+	
+	if (this is empty)){
+		set the new node = to head
+		increase size
+		
+		return true;
+	}
+	else
+	{
+	Node * current = head;
+	Node * previous = NULL;
+
+	while ((current != NULL) && (current's frequency  < newNode 's frequency ))
+	{	
+		move left()
+	}//end while
+	
+
+	if (current != NULL){
+		if (head frequency == current frequency){
+			
+			set the new node's next pointer = list head
+			increase size
+			
+			return true;
+		}//end if
+		
+		if (current frequency == newNode frequency){
+			while ((current string frequency == newNode string frequency) &&
+					(string compare(current, newNode)) < 0)){	
+				move left()
+				
+				if (current == NULL){
+					set the head's next pointer to the new node
+					set the tail = new node
+					increase size
+				return true;
+				}//end if
+			}// end while
+
+			insert middle
+			increase size
+			
+			return true;
+		}//end if
+
+		insert middle
+		increase size
+		return true;
+	} 
+	else if (current == NULL){
+		set last node's next to new node
+		set tail to new node
+		increase size
+		return true;
+	}//end if
+	else
+		increase frequency
+		delete new node
+		return false;
+	}//end if 
+
+	// if something went wrong
+	return false;
+
+}//end insert
+
+ /** Insert
+	@brief inserts a node at the end of the list
+	@param newEntry the value to be inserted
+	@return true if entry is successfull
+*/
+bool List::insertFreqs(Node * insertNode){
+	create a new node
+	if (this is empty){
+		set head = new node
+		increase size
+		return true;
+	}
+	else
+	{
+	Node * current = head;
+	Node * previous = NULL;
+
+	while ((current != NULL) && (current frequency < newNode frequency ))
+	{	
+		move left
+	}//end while
+	
+
+	if (current != NULL){
+		if (head->getFrequency() == current->getFrequency()){
+			newNode->setLeftPtr(head);
+			head->setRightPtr(newNode);
+			head = newNode;
+			size++;
+			return true;
+		}//end if
+		
+		if (current frequency == newNode frequency){
+			while ((current int frequency == new node int frequency) &&
+					(current int < new node int)){	
+				move left()
+				
+				if (current == NULL){
+					set the head's next pointer to the new node
+					set the tail = new node
+					increase size
+				return true;
+				}//end if
+			}// end while
+
+			insert middle
+			increase size
+			
+			return true;
+		}//end if
+
+		insert middle
+		increase size
+		return true;
+	} 
+	else if (current == NULL){
+		set last node's next to new node
+		set tail to new node
+		increase size
+		return true;
+	}//end if
+	else
+		increase frequency
+		delete new node
+		return false;
+	}//end if 
+
+	// if something went wrong
+	return false;
+
+}//end insert
+
+/** Destroy Node
+	@brief helper method to for remove() 
+	@param removalNode the node to remove
+*/
+void destroyNode(Node * removalNode){
+	set left to null
+	delete node
+	set node = to null
+}//end destroyNode
+
+ /** Remove
+	@brief removes the node containing the selected entry
+	@param removalEntry the integer item searchable in the list 
+*/
+bool List::remove(int removalKey)
+{
+	bool canRemove = checkForNode(removalKey)
+
+   if (canRemoveItem)
+   {
+		Node * current = head;
+		Node * previous = NULL;
+      
+	while ((current != NULL)&&(current item < removalKey ))
+	{
+		move left
+	}//end while
+
+		if (current == head){
+
+			head = head's left
+			destroyNode(current);
+			size--;
+			return true;
+		} 
+		else {
+			deleteMiddle()
+			destroyNode(current);
+			size--;
+			return true;
+		}//end if
+   } // end if
+   
+	return canRemoveItem;
+}  // end remove
+
+ void List::printDetails(Node * current){
+ 
+	cout << "Item: "<< current Item() << ", Frequency: " << current Frequency();
+	cout << " -- String: " << current String() <<  ", Frequency: " 
+		 << current StringFrequency() << endl;
+
+ }//end printDetails
+
+  /** Print N
+  */
+ void List::printN(int cycleCount, List &printableList){
+	
+	 int count = 0;
+	Node * current = printableList.getHead();
+	cout << "Least Frequent: " << endl;
+	while ((current != NULL) && (count < cycleCount)){
+		cout << (count+1) << ": ";
+		printDetails(current);
+		current = current LeftPtr();
+		count++;
+
+	}//end while
+		
+	count = 0;
+	current = printableList's tail;
+	
+	cout << "Most Frequent: " << endl;
+	while ((current != NULL) && (count < cycleCount)){
+		
+		cout << (count+1) << ": ";
+		printDetails(current);
+		current = current RightPtr();
+		count++;
+
+	}//end while
+
+ }//end printN
+
+ /** Clear
+	@brief Clears an entire list of all nodes
+	@pre List must contain at least one element
+	@post List is empty
+ */
+ void List::clear() {
+	 while (head != NULL){
+		set deleteNode to head
+		head = head LeftPtr();
+		delete deleteNode;
+		deleteNode = NULL;
+
+	 }	
+		delete head;
+		head = NULL;
+	assert(isEmpty());
+ }//end clear
+
+  /**=================================
+	@file thbs.h
+	@author Terence Schumacher
+	@author Dominic Badzik
+	@version 1.2
+*===================================*/
+class ThreadedBST {
+private:
+	Node * root;
+	int size;
+
+	void insertLeftChildHelper(Node * targetNode, Node * insertionNode,
+				   Node * tempLeftNode);
+	void insertRightChildHelper(Node * targetNode, Node * insertionNode,
+				    Node * tempRightNode);
+	void preorderInsert(Node * currentNode);
+
+	Node * parentFinder(Node *& orphanNode);
+	Node * stringParentFinder(Node *& orphanNode);
+
+	void removeWithLeftChild(Node * containsLeftChildNode);
+	void removeWithRightChild(Node * containsRightChildNode);
+	void removeWithTwoChildren(Node * containsBothChildrenNode);
+	void removeWithNoChildren(Node * containsNoChildrenNode);
+
+	void stringRemoveWithLeftChild(Node * containsLeftChildNode);
+	void stringRemoveWithRightChild(Node * containsRightChildNode);
+	void stringRemoveWithTwoChildren(Node * containsBothChildrenNode);
+	void stringRemoveWithNoChildren(Node * containsNoChildrenNode);
+public:
+	ThreadedBST();
+	ThreadedBST(ThreadedBST& copyTree);
+	~ThreadedBST();
+
+	bool retrieve(int targetInt, Node *& returnedNode);
+	bool retrieve(string targetString, Node *& returnedNode);
+	
+	bool insert(int intValue);
+	bool insert(string stringValue);
+	bool insert(Node * insertionNode);
+
+	void leastFrequent(int cycleCount);
+	void mostFrequent(int cycleCount);
+
+	void iterativeInorderTraverse();
+	void inorderTraverse(Node * currentNodeLocation);
+	void preorderTraverse(Node * currentNodeLocation);
+	void postorderTraverse(Node * currentNodeLocation);
+
+	void inorderStrTraverse(Node * currentNodeLocation);
+	void preorderStrTraverse(Node * currentNodeLocation);
+	void postorderStrTraverse(Node * currentNodeLocation);
+
+	void printFrequencyTraverse(Node * currentNodeLocation);
+	void printFrequencyStrTraverse(Node * currentNodeLocation);
+
+	void transferToList(Node * currentNodeLocation, List &insertionList);
+	void transferStringsToList(Node * currentNodeLocation,
+				   List &insertionList);
+	
+	bool isEmpty();
+	Node *getRoot();
+	void setRoot(Node * newRoot);
+
+	void deleteInt(int removalKey);
+	void deleteString(string removalKey);
+	void deleteNode(Node * removalNode);
+	void stringDeleteNode(Node * removalNode);
+	
+};
+
+  /**===========================================================================
+	@file tbst.cpp
+	@author Terence Schumacher
+	@author Dominic Badzik
+	@version 1.0
+*=============================================================================*/
+
+ /** Constructor
+	@brief empty Tree
+ */
+ThreadedBST::ThreadedBST() : root(NULL), size(0)
+{
+
+}//end constructor
+
+ /** Copy Constructor
+ */
+ThreadedBST::ThreadedBST(ThreadedBST &rightHandTree){
+
+	if (rightHandTree Empty()){
+		return;
+	}
+	else {
+		this->setRoot(NULL);
+		preorderInsert(rightHandTree Root());
+	}//end if
+}//end copy Constructor
+
+ /** Preorder Insert
+	@brief helps copy constructor construct tree
+	@param currentNode node to insert into this tree
+ */
+void ThreadedBST::preorderInsert(Node * currentNode){
+
+	if (currentNode String()){
+		insert(currentNode String());
+	}
+	else {
+		insert(currentNode Item());
+	}//end if
+	
+	if ( not currentNode LeftThread())
+		preorderInsert(currentNode LeftPtr());
+	
+	if (not currentNode RightThread())
+		preorderInsert(currentNode RightPtr());
+
+}//end preorderInsert
+
+ /** Destructor
+ */
+ThreadedBST::~ThreadedBST(){
+	while (root != NULL){
+		deleteNode(root);
+	}//end while
+}//end destructor
+
+ /** Is Empty
+	@brief checks to see whether the root is NULL
+	@return true if NULL, false otherwise
+ */
+bool ThreadedBST::isEmpty(){
+	return (root == NULL);
+}//end isEmpty
+
+  /** Retrieve
+	@brief returns whether or not a target number is in the tree
+	@param targetInt the number to search for
+	@param returnNode pointer to location of select node or prospective position
+	@return True if containted in tree, false otherwise; both cases return pointer location
+ */
+bool ThreadedBST::retrieve(string targetString, Node* returnNode){
+
+	check if (tree is empty)
+		set returnNode to NULL
+		return failure
+	else
+		walk through the tree
+			set pointer to root
+			set pointer to null
+
+			while (second pointer = null)
+
+				if (pointer item = targetString)
+					set second pointer to pointer
+				else if (targetString < pointer item)
+					if (pointer left child NULL || pointer left threaded)
+						set second pointer to pointer
+					else
+						move left
+				else (targetString > pointer item)
+					if (pointer right child NULL || pointer right threaded)
+						set second pointer to pointer
+					else 
+						move right
+			set returnNode to second pointer
+			return (returnNode item = targetString)
+	return false;
+}//end retrieve
+
+ /** Retrieve
+	@brief returns whether or not a target number is in the tree
+	@param targetInt the number to search for
+	@param returnNode pointer to location of select node or prospective position
+	@return True if containted in tree, false otherwise; both cases return pointer location
+ */
+bool ThreadedBST::retrieve(int targetInt, Node* returnNode){
+
+	check if (tree is empty)
+		set returnNode to NULL
+		return failure
+	else
+		walk through the tree
+			set pointer to root
+			set pointer to null
+
+			while (second pointer = null)
+
+				if (pointer item = targetInt)
+					set second pointer to pointer
+				else if (targetInt < pointer item)
+					if (pointer left child NULL || pointer left threaded)
+						set second pointer to pointer
+					else
+						move left
+				else (targetInt > pointer item)
+					if (pointer right child NULL || pointer right threaded)
+						set second pointer to pointer
+					else 
+						move right
+			set returnNode to second pointer
+			return (returnNode item = targetInt)
+	return false;
+}//end retrieve
+
+Node * ThreadedBST::getRoot(){
+	return root;
+}//end getRoot
+
+void ThreadedBST::setRoot(Node * newRoot){
+	root = newRoot;
+}//end setRoot
+
+
+/** Insert
+	@brief inserts integer number into tree
+	@return true if successful, false otherwise
+*/
+bool ThreadedBST::insert(int intValue){
+	
+	create a new node with intValue
+	return insert(newNode);
+
+}//end insert
+
+ /** Insert
+	@brief inserts string token into tree
+	@return true if successful, false otherwise
+*/
+bool ThreadedBST::insert(string stringValue){
+
+	create new node with string value
+	return insert(new node)
+	
+	return false;
+}//end insert
+
+ /** Insert Left Child Helper
+*/
+void ThreadedBST::insertLeftChildHelper(Node * targetNode, Node * insertionNode,
+					Node * tempLeftNode){
+	set lefthread false
+	set leftchild to new node
+	set newnode left thread
+	set leftthread true
+	set right child to target
+	set rightthread true
+
+}//end insertLeftChildAssignment
+
+void ThreadedBST::insertRightChildHelper(Node * targetNode, Node * insertionNode,
+					 Node * tempRightNode){
+	set rightthread false
+	set rightchild to new node
+	set newnode right thread
+	set rightthread true
+	set left child to target
+	set leftthread true	
+
+}//end insertRightChildAssignment
+
+ /** Insert
+	@brief inserts Node into tree
+	@return true if successful, false otherwise
+*/
+bool ThreadedBST::insert(Node * insertionNode){
+
+	check node
+		not empty
+		has string
+		has integer
+
+	check for empty tree
+		if (empty)
+			root = newNode
+		return success
+
+	check and see if the value already exists
+		create a pointer
+		 exists = (look for the node)
+
+	if (exists)
+		increase frequency on target node
+		return success
+	else
+		if(it belongs on the left)
+			check to see if child is threaded || = NULL
+			save the location of the thread
+		
+			insertLeftChildHelper
+				set lefthread false
+				set leftchild to new node
+				set newnode left thread
+				set leftthread true
+				set right child to target
+				set rightthread true
+
+		else (it belongs on the right)
+			check to see if child is threaded || = NULL
+			save the location of the thread
+
+			insertRightChildHelper
+				set rightthread false
+				set rightchild to new node
+				set newnode right thread
+				set rightthread true
+				set left child to target
+				set leftthread true
+		return success
+
+	return failure
+}//end insert
+
+ /** Inorder Iterative Traversal
+	@brief traverses the tree iteratively utilizing the threads of the tree
+ */
+void ThreadedBST::iterativeInorderTraverse() {
+	Dominic is covering this
+
+}//end iterativeInorderTraverse
+
+//=====================Integer Traversals
+
+ /** Inorder Traverse
+	@brief recursive inorder Traversal of tree
+	@param currentNodeLocation node to traverse
+ */
+void ThreadedBST::inorderTraverse(Node * currentNodeLocation){
+	
+	if( not currentNodeLocation LeftThread())
+		inorderTraverse(currentNodeLocation LeftPtr());
+	
+	visit(curretnNodeLocator)
+
+	if( not currentNodeLocation RightThread())
+		inorderTraverse(currentNodeLocation RightPtr());
+
+}//end inorderTraverse
+
+ /** Pre order Traverse
+	@brief recursive preorder Traversal of tree
+	@param currentNodeLocation node to traverse
+ */
+void ThreadedBST::preorderTraverse(Node * currentNodeLocation){
+
+	visit(curretnNodeLocator)
+	if(not currentNodeLocation LeftThread())
+		inorderTraverse(currentNodeLocation LeftPtr());
+	if(not currentNodeLocation RightThread())
+		inorderTraverse(currentNodeLocation RightPtr());
+}//end preorderTraverse
+
+ /** Post order Traverse
+	@brief recursive postorder Traversal of tree
+	@param currentNodeLocation node to traverse
+ */
+void ThreadedBST::postorderTraverse(Node * currentNodeLocation){
+
+	if( not currentNodeLocation LeftThread())
+		inorderTraverse(currentNodeLocation LeftPtr());
+	if( not currentNodeLocation RightThread())
+		inorderTraverse(currentNodeLocation RightPtr());
+	visit(curretnNodeLocator)
+}//end postorderTraverse
+
+ /** Inorder Traverse
+	@brief recursive inorder Traversal of tree
+	@param currentNodeLocation node to traverse
+ */
+void ThreadedBST::printFrequencyTraverse(Node * currentNodeLocation){
+	
+	if(not currentNodeLocation LeftThread())
+		printFrequencyTraverse(currentNodeLocation LeftPtr());
+	
+	visit(currentNodeLocation)
+	visitFreq(currentNodeLocation)
+
+	if(not currentNodeLocation RightThread())
+		printFrequencyTraverse(currentNodeLocation RightPtr());
+
+}//end inorderTraverse
+
+//======================String Traversals
+
+ /** Inorder Traverse
+	@brief recursive inorder Traversal of tree
+	@param currentNodeLocation node to traverse
+ */
+void ThreadedBST::inorderStrTraverse(Node * currentNodeLocation){
+	
+	if(not currentNodeLocation LeftThread())
+		inorderStrTraverse(currentNodeLocation LeftPtr());
+	
+	visit(currentNodeLocation)
+
+	if(not currentNodeLocation RightThread())
+		inorderStrTraverse(currentNodeLocation RightPtr());
+
+}//end inorderTraverse
+
+ /** Pre order Traverse
+	@brief recursive preorder Traversal of tree
+	@param currentNodeLocation node to traverse
+ */
+void ThreadedBST::preorderStrTraverse(Node * currentNodeLocation){
+
+	visit(currentNodeLocation)
+	if(not currentNodeLocation LeftThread())
+		inorderTraverse(currentNodeLocation LeftPtr());
+	if(not currentNodeLocation RightThread())
+		inorderTraverse(currentNodeLocation RightPtr());
+
+}//end preorderTraverse
+
+ /** Post order Traverse
+	@brief recursive postorder Traversal of tree
+	@param currentNodeLocation node to traverse
+ */
+void ThreadedBST::postorderStrTraverse(Node * currentNodeLocation){
+
+	if( not currentNodeLocation LeftThread())
+		inorderTraverse(currentNodeLocation LeftPtr());
+	if(not currentNodeLocation RightThread())
+		inorderTraverse(currentNodeLocation RightPtr());
+	visit(currentNodeLocation)
+
+}//end postorderTraverse
+
+ /** Inorder Traverse
+	@brief recursive inorder Traversal of tree
+	@param currentNodeLocation node to traverse
+ */
+void ThreadedBST::printFrequencyStrTraverse(Node * currentNodeLocation){
+	
+	if(not currentNodeLocation LeftThread())
+		printFrequencyStrTraverse(currentNodeLocation LeftPtr());
+	visit(currentNodeLocation)
+	if(not currentNodeLocation RightThread())
+		printFrequencyStrTraverse(currentNodeLocation RightPtr());
+
+}//end inorderTraverse
+
+//===================IntegerRemove
+
+ /** Parent Finder
+ */
+Node * ThreadedBST::parentFinder(Node *& orphanNode){
+	//removing root
+	if (orphanNode == root)
+		return NULL;
+
+	set orphanData = orphanNode Item();
+	set Node current = root;
+
+	while ((LeftPtr() != orphanNode) && (RightPtr() != orphanNode)){
+		
+		if (orphanData < Item())
+			current = LeftPtr();
+		else 
+			current = RightPtr();
+
+	}//end while
+
+	if (LeftPtr Item() == orphanData){
+		return current;
+	}//end if left equal
+
+	if (RightPtr Item() == orphanData){
+		return current;		
+	}//end if right equal
+		return NULL;
+}//end parentFinder
+
+/** Removal With Left Child
+	@brief
+	@param
+ */
+void ThreadedBST::removeWithLeftChild(Node * removalNode){
+	set Node temp = removalNode LeftPtr();
+	Node * parent = parentFinder(removalNode);
+
+	if (parent == NULL){
+		root = temp;
+
+		while(( temp not RightThread()) && (temp RightPtr() != NULL))
+			temp = RightPtr();
+		set RightPtr(parent);
+
+	}
+	else {
+		if (parent LeftPtr() == removalNode){
+			set parent LeftPtr(temp);
+
+			while ((temp not RightThread())&& (temp RightPtr() != NULL))
+				temp = RightPtr();
+			set temp RightPtr(removalNode RightPtr());
+		}
+		else{
+			
+			set parent RightPtr(temp);
+
+			while((temp not LeftThread()) && (temp LeftPtr() != NULL))
+				temp = LeftPtr();
+
+			set temp LeftPtr(parent);
+
+			temp = removalNode LeftPtr();
+
+			while((temp not RightThread()) && (temp RightPtr() != NULL))
+				temp = temp RightPtr();
+
+			set temp RightPtr(removalNode->getRightPtr());
+		}//end if on left or right
+	}//end if parent NULL
+
+	delete removalNode;
+
+}//end removeWithLeftChild
+ 
+ /** Removal with Right Child
+	@brief
+	@param
+ */
+void ThreadedBST::removeWithRightChild(Node * removalNode){
+	
+	set Node temp = removalNode RightPtr();
+	set Node parent = parentFinder(removalNode);
+
+	if (parent == NULL){
+		root = temp;
+
+		while ((temp not LeftThread()) && (temp LeftPtr() != NULL))
+			temp = LeftPtr();
+
+		set temp LeftPtr(parent);
+	}
+	else {
+		
+		if (parent LeftPtr() == removalNode){
+			
+			set parent LeftPtr(temp);
+
+			while((temp not RightThread()) && (temp RightPtr() != NULL))
+				temp = RightPtr();
+
+			set temp RightPtr(parent);
+			
+			//set other side
+			temp = removalNode RightPtr();
+
+			while((temp not LeftThread()) && (temp LeftPtr() != NULL))
+				temp = LeftPtr();
+			set temp LeftPtr(removalNode LeftPtr());
+		}
+		else {
+			set parent RightPtr(temp);
+
+			while((temp not LeftThread()) && (temp LeftPtr() != NULL))
+				temp = LeftPtr();
+
+			set temp LeftPtr(parent);
+		}//end if left or right removal
+	}//end if parent == NULL
+
+	delete removalNode;
+
+}//end removeWithRightChild 
+
+ /** Removal with No Children
+	@brief 
+	@param
+ */
+void ThreadedBST::removeWithNoChildren(Node * removalNode){
+
+	set Node parent = parentFinder(removalNode);
+
+	if (parent == NULL)
+		root = NULL;
+	else if (parent LeftPtr() == removalNode) {
+		set parent LeftPtr(removalNode LeftPtr());
+		set parent LeftThread(true);
+	}
+	else if (parent RightPtr() == removalNode){
+		set parent RightPtr(removalNode RightPtr());
+		set parent RightThread(true);
+	}//end if null, left, or right
+
+	delete removalNode;
+
+}//end removeWithNoChildren
+
+ /** Removal With Two Children
+	@brief 
+	@param
+ */
+void ThreadedBST::removeWithTwoChildren(Node * removalNode){
+
+	set Node transitionNode = removalNode RightPtr();
+
+	while((transitionNode not LeftThread()) && (transitionNode LeftPtr() != NULL))
+		transitionNode = LeftPtr();
+
+	set removalNode Item(transitionNode Item());
+	set removalNode Frequency(transitionNode Frequency());
+	set transitionNode Frequency(0);
+	deleteNode(transitionNode);
+
+}//end removeWithTwoChildren
+
+ /** Delete Int
+ */
+void ThreadedBST::deleteInt(int removalKey){
+	
+	set Node prospectRemovalNode = NULL;
+
+	bool found = retrieve(removalKey, prospectRemovalNode);
+
+	if (found){
+		deleteNode(prospectRemovalNode);
+	}
+	else{
+		printNotFound()
+	}//end if
+
+}//end deleteInt
+
+ /** Delete Node
+	@brief deletes a specified Noded
+	@param removalNode the node to delete
+ */
+void ThreadedBST::deleteNode(Node * removalNode){
+	
+	if (check removalNode OnlyLeftChild()){
+		removeWithLeftChild(removalNode);
+	}
+	else if (check removalNode OnlyRightChild()){
+		removeWithRightChild(removalNode);
+	} 
+	else if (removalNode isLeaf()) {
+		removeWithNoChildren(removalNode);
+	} 
+	else {
+		removeWithTwoChildren(removalNode);
+	}//end if
+
+}//end deleteNode
+
+//===================StringRemove
+
+ /** Parent Finder
+ */
+Node * ThreadedBST::stringParentFinder(Node *& orphanNode){
+	//removing root
+	if (orphanNode == root)
+		return NULL;
+
+	string orphanData = orphanNode String();
+	set Node current = root;
+
+	while ((current LeftPtr() != orphanNode) && (current RightPtr() != orphanNode)){
+		
+		if (compare orphan data and current data) < 0)
+			current = LeftPtr();
+		else 
+			current = RightPtr();
+
+	}//end while
+
+	if (current LeftPtr String() == orphanData){
+		
+		return current;
+	}//end if left equal
+
+	if (current RightPtr String() == orphanData){
+		return current;		
+	}//end if right equal
+	 return NULL;
+}//end parentFinder
+
+/** Removal With Left Child
+	@brief
+	@param
+ */
+void ThreadedBST::stringRemoveWithLeftChild(Node * removalNode){
+	set Node temp = removalNode LeftPtr();
+	set Node parent = stringParentFinder(removalNode);
+
+	if (parent == NULL){
+		root = temp;
+
+		while((temp not RightThread()) && (temp RightPtr() != NULL))
+			temp = RightPtr();
+		set temp RightPtr(parent);
+
+	}
+	else {
+		if (parent LeftPtr() == removalNode){
+			set parent LeftPtr(temp);
+
+			while ((temp not RightThread())&& (temp RightPtr() != NULL))
+				temp = RightPtr();
+
+			set temp RightPtr(removalNode RightPtr());
+		}
+		else{
+			set parent RightPtr(temp);
+
+			while((temp not LeftThread()) && (temp LeftPtr() != NULL))
+				temp = LeftPtr();
+
+			set temp LeftPtr(parent);
+
+			temp = removalNode LeftPtr();
+
+			while((temp not RightThread()) && (temp RightPtr() != NULL))
+				temp = RightPtr();
+
+			set temp RightPtr(removalNode RightPtr());
+		}//end if on left or right
+	}//end if parent NULL
+
+	delete removalNode;
+
+}//end removeWithLeftChild
+ 
+ /** Removal with Right Child
+	@brief
+	@param
+ */
+void ThreadedBST::stringRemoveWithRightChild(Node * removalNode){
+	
+	set Node temp = removalNode RightPtr();
+	set Node parent = stringParentFinder(removalNode);
+
+	if (parent == NULL){
+		root = temp;
+
+		while ((temp not LeftThread()) && (temp LeftPtr() != NULL))
+			temp = LeftPtr();
+
+		set temp LeftPtr(parent);
+	}
+	else {
+		
+		if (parent LeftPtr() == removalNode){
+			
+			set parent LeftPtr(temp);
+
+			while((temp not RightThread()) && (temp RightPtr() != NULL))
+				temp = RightPtr();
+
+			set temp RightPtr(parent);
+			
+			//set other side
+			temp = removalNode RightPtr();
+
+			while((temp not LeftThread()) && (temp LeftPtr() != NULL))
+				temp = LeftPtr();
+			
+			set temp LeftPtr(removalNode LeftPtr());
+		}
+		else {
+			
+			set parent RightPtr(temp);
+
+			while((temp not LeftThread()) && (temp LeftPtr() != NULL))
+				temp = LeftPtr();
+
+			set temp LeftPtr(parent);
+		}//end if left or right removal
+	}//end if parent == NULL
+
+	delete removalNode;
+
+}//end removeWithRightChild 
+
+ /** Removal with No Children
+	@brief 
+	@param
+ */
+void ThreadedBST::stringRemoveWithNoChildren(Node * removalNode){
+
+	set Node parent = stringParentFinder(removalNode);
+
+	if (parent == NULL)
+		root = NULL;
+	else if (parent LeftPtr() == removalNode) {
+		set parent LeftPtr(removalNode LeftPtr());
+		set parent LeftThread(true);
+	}
+	else if (parent RightPtr() == removalNode){
+		set parent RightPtr(removalNode RightPtr());
+		set parent RightThread(true);
+	}//end if null, left, or right
+
+	delete removalNode;
+
+}//end removeWithNoChildren
+
+ /** Removal With Two Children
+	@brief 
+	@param
+ */
+void ThreadedBST::stringRemoveWithTwoChildren(Node * removalNode){
+
+	set Node transitionNode = removalNode RightPtr();
+
+	while((transitionNode not LeftThread()) && (transitionNode LeftPtr() != NULL))
+		transitionNode = LeftPtr();
+
+	set removalNode Item(transitionNode String());
+	set removalNode Frequency(transitionNode StringFrequency());
+	set transitionNode Frequency(0);
+	stringDeleteNode(transitionNode);
+
+}//end removeWithTwoChildren
+
+ /** Delete String
+ */
+void ThreadedBST::deleteString(string removalKey){
+	
+	set Node prospectRemovalNode = NULL;
+
+	bool found = retrieve(removalKey, prospectRemovalNode);
+
+	if (found){
+		stringDeleteNode(prospectRemovalNode);
+	}
+	else
+		printNotFount(removalKey)
+}//end deleteString
+
+ /** Delete Node
+	@brief deletes a specified Noded
+	@param removalNode the node to delete
+ */
+void ThreadedBST::stringDeleteNode(Node * removalNode){
+	
+	if (check removalNode OnlyLeftChild()){
+		stringRemoveWithLeftChild(removalNode);
+	}
+	else if (check removalNode OnlyRightChild()){
+		stringRemoveWithRightChild(removalNode);
+	} 
+	else if (check removalNode isLeaf()) {
+		stringRemoveWithNoChildren(removalNode);
+	} 
+	else {
+		stringRemoveWithTwoChildren(removalNode);
+	}//end if
+
+}//end deleteNode
+
+ /** Transfer To List
+ */
+void ThreadedBST::transferToList(Node * currentNodeLocation, List &insertionList){
+		
+	if(currentNodeLocation not LeftThread())
+		transferToList(currentNodeLocation LeftPtr(), insertionList);
+		insertFreqs(currentNodeLocation);
+	if(currentNodeLocation not RightThread())
+		transferToList(currentNodeLocation RightPtr(), insertionList);
+
+}//transferToList
+
+ /** Transfer To List
+ */
+void ThreadedBST::transferStringsToList(Node * currentNodeLocation, List &insertionList){
+		
+	if(currentNodeLocation not LeftThread())
+		transferStringsToList(currentNodeLocation LeftPtr(), insertionList);
+		insertStrFreqs(currentNodeLocation);
+	if(currentNodeLocation not RightThread())
+		transferStringsToList(currentNodeLocation RightPtr(), insertionList);
+
+}//transferToList
