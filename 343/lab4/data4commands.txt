@@ -1,0 +1,59 @@
+S
+H 1000
+H 5000
+H 8000
+B 8000 D F You've Got Mail, 1998
+B 1000 D D Barry Levinson, Good Morning Vietnam,
+B 1000 D C 5 1940 Katherine Hepburn
+B 2000 D F The Hangover, 2009
+B 4444 D C 2 1971 Malcolm McDowell
+B 5000 D C 3 1971 Ruth Gordon
+R 5000 D C 3 1971 Ruth Gordon
+B 8888 D F Annie Hall, 1977
+B 1111 D C 2 1971 Malcolm McDowell
+B 1111 D Z 2 1971 Malcolm McDowell
+B 5000 D C 3 1971 Ruth Gordon
+R 5000 D C 3 1971 Ruth Gordon
+B 1000 D D Gus Van Sant, Good Will Hunting,
+B 2000 D D Phillippe De Broca, King of Hearts,
+R 4444 D C 2 1971 Malcolm McDowell
+B 1000 D C 5 1940 Cary Grant
+B 1111 D C 3 1971 Ruth Gordon
+B 1000 D C 3 1971 Ruth Gordon
+B 8888 D F When Harry Met Sally, 1989
+B 8888 D D Andrew Stanton, Wall-E,
+R 8000 D F You've Got Mail, 1998
+B 9999 D F You've Got Mail, 1998
+B 8000 D C 3 1971 Ruth Gordon
+B 1111 D C 10 1941 Humphrey Bogart
+B 8000 D C 3 1971 Ruth Gordon
+X
+B 1111 D C 9 1938 Cary Grant
+B 5000 D C 3 1971 Ruth Gordon
+B 8888 D D Nancy Savoca, Dogfight,
+B 7777 D D Steven Spielberg, Schindler's List,
+R 5000 D C 3 1971 Ruth Gordon
+Z 1000 D C 10 1941 Humphrey Bogart
+B 5000 D C 3 1971 Ruth Gordon
+B 8000 D F National Lampoon's Animal House, 1978
+B 8888 D C 3 1971 Ruth Gordon
+B 7777 D C 3 1971 Ruth Gordon
+B 2000 D C 3 1971 Ruth Gordon
+B 2000 D D Nancy Savoca, Dogfight,
+B 9000 D D Clint Eastwood, Unforgiven,
+B 9000 D F Fargo, 1996
+B 1234 D C 2 1971 Malcolm McDowell
+B 1000 D F Bogus Title, 2001
+B 1000 Z F Fargo, 1996
+B 2000 D C 3 1971 Ruth Gordon
+B 9000 D C 3 1971 Ruth Gordon
+B 9000 D C 3 1971 Ruth Gordon
+B 3333 D C 3 1971 Ruth Gordon
+B 7777 D C 3 1971 Ruth Gordon
+B 1000 D D Steven Spielberg, Bogus Title,
+S
+H 1000
+H 1111
+H 5000
+H 8000
+H 8888

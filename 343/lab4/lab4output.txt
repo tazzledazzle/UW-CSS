@@ -1,0 +1,41 @@
+Print as though conserving paper and using portrait on 8.5 by 11 inch paper.
+Use one line per item.  Displays are to be nicely formatted, in easily
+read columns. You can display output as you like within the guidelines,
+but here's one readable example of partial output (classics):
+
+*IN* *OUT*
+DVD  DVD TITLE                 DIRECTOR         YEAR MO  ACTOR
+ 9   1   Holiday               George Cukor     1938  9  Cary Grant
+10   0   Holiday               George Cukor     1938  9  Katherine Hepburn
+...
+ 9   1   The Philadelphia Stor George Cukor     1940  5  Cary Grant
+10   0   The Philadelphia Stor George Cukor     1940  5  Katherine Hepburn
+
+To make it fit and still be easy to read, the title is truncated.
+The following will left justify permanently.
+    output.setf(ios::left, ios::adjustfield);
+
+You can easily left and right justify output as you go by using left or right.
+And the setw will not truncate strings in output. The substring function
+of the string class is useful for this.  For example:
+
+    cout << ...
+         << left << director.substr(0, DIRECTOR_OUTPUT_MAX_LENGTH)
+         << right << setw(MONTH_OUTPUT_WIDTH) << month
+         << ...
+
+-------------------------------------------------------------------------------
+Here's a readable display example of a customer's history: 
+
+  *** Customer ID = 1000  Mouse Minnie
+DVD Borrow  Good Morning Vietnam  Barry Levinson    1988
+DVD Borrow  The Philadelphia Stor George Cukor      1940 5  Katherine Hepburn
+DVD Borrow  Good Will Hunting     Gus Van Sant      2000
+DVD Borrow  The Philadelphia Stor George Cukor      1940 5  Cary Grant
+DVD Borrow  Harold and Maude      Hal Ashby         1971 3  Ruth Gordon
+
+  *** Customer ID = 8000  Wacky Wally
+DVD Borrow  You've Got Mail       Nora Ephron       1998
+DVD Return  You've Got Mail       Nora Ephron       1998
+DVD Borrow  Harold and Maude      Hal Ashby         1971 3  Ruth Gordon
+DVD Borrow  National Lampoon's An John Landis       1978
