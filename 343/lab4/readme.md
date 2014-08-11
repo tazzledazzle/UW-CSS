@@ -1,3 +1,5 @@
+Lab 4 - Movie Database
+=======================
 1. My program works exactly to specifications. The only thing that is not implemented is some of the copy constructors, which I included for extendability.
 2. My hash tables are located within the factory class and within the store, there are three: storeInventory and transactionInventory. The hash table contained within the store is a bucket hash with binary tree characteristics.
 3. For movie data, I read in the data4movies.txt in the store. I grab the first character input, send that to the hash() function, input the integer returned from the hash function into the storeInventory factory, and create an object if available. If object available, I then send the rest of the infile to the set data function for that object. Otherwise the rest of the line is read in and thrown away. Once the object is created with data, I insert it into is proper coordinating location within the storeInventory within the store and it is sorted into a binary search tree according to its specified sort.
