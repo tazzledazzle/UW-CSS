@@ -1,0 +1,43 @@
+struct Forums {}
+struct ForumPosts {}
+struct FourmMembers {}
+struct Email {}
+struct Inbox {}
+struct emailMessage {}
+struct sentMessage {} 
+struct pendingMessage {} //maybe
+
+struct User {
+    string name
+    string email
+    
+    string phone
+    string city
+    string state
+    
+    Photo userPhoto
+    
+    CreditCard creditCardNumber
+}
+
+struct Photo {
+    string photoName
+    string photoPath
+}
+struct Store {}
+struct Buyer {}
+struct Seller {}
+struct purchasableItem {}
+struct Groups {}
+struct GroupMembers {}
+struct Events {}
+struct Profile {}
+struct Projects {
+    
+}
+struct projectHistory {}
+struct Chest(stash) {}
+struct texture {}
+struct pattern {}
+struct tools {}
+struct userNamedItem {}
