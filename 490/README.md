@@ -1,4 +1,4 @@
-Multimedia Information Processing
+CSS 490 Multimedia Information Processing
 ====================
 
 
