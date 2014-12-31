@@ -1,4 +1,4 @@
-Hardware and Computer Systems
+Hardware and Computer Organization
 ==============================
 
 
