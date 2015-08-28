@@ -1,0 +1,74 @@
+
+
+
+/** summation
+ * @brief Thread class to compute summation
+ * @version 1.0
+ * @author Terence Schumacher
+ * @created 1/22/2014
+ */
+class summation extends Thread {
+
+    //attributes
+    private int sum;
+    private String params;
+    /** constructor
+     * @param param number passed to summations to compute sum
+     */
+    summation(String param) { params = param; }
+
+    /** Run
+     * @brief runs the summation, calculates the sum and prints it out
+     *
+     */
+    public void run()
+    {
+        int i, upper = Integer.valueOf(params);
+        sum = 0;
+
+        for (i = 1; i <= upper; i++)
+            sum += i;
+
+        System.out.println("Sum = " + sum);
+    }
+}
+
+
+/**
+ * SummationThread
+ * Runs the summation program
+ * @version 1.0
+ * @author Terence Schumacher
+ * @created 1/22/2014
+ */
+public class SummationThread
+{
+    /** main
+     * @brief Runs the summation Thread class
+     * @param argv arguments passed to the summation child.
+     * @return summation of argv.
+     */
+    public static void main(String argv[])
+    {
+        if (argv.length != 1)   //check valid argv length
+            System.err.println("Invalid number of Arguments");
+
+        String arg = argv[0];
+        summation child = new summation(arg); //create new thread
+        child.start();  //execute thread
+        try
+        {
+            child.join();   // complete child thread
+        }
+        catch (InterruptedException intE) {}
+    }
+}
+
+
+
+
+
+
+
+
+
