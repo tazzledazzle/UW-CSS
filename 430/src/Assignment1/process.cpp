@@ -1,3 +1,9 @@
+/**
+ * Fork Processes
+ * @author Terence Schumacher
+ * 
+ */
+
 #include <stdio.h>
 #include <iostream>
 #include <unistd.h>    //for fork, pipe
