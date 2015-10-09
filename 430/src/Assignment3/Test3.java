@@ -1,20 +1,3 @@
-// -----------------------------------------------------------------------------
-// ---------------------------- Written by Josh Brunner ------------------------
-// ----------------------- for CSS 430 HW3/pt.2  Assignment --------------------
-// -------------------------- Last modified: 5/14/2014 -------------------------
-// --------------------------------- Test3.java --------------------------------
-/*
- * PURPOSE OF FILE
- * This file is responsible for creating a user level test thread. When 
- * called, it executes X amount of pairs of TestThread3a's and TestThread3b's. 
- * Each of these programs performs heavy work on the computer. Afterwords, the 
- * Test3 programs prints the elapsed time to the console. 
- *
- * ASSUMPTIONS
- * It is assumed that the user understands that Test3 takes in one int.
- * In addition, it is assumed that both TestThread3a and TestThread3b java 
- * files are located in the same folder as this one.
- */
 
 import java.util.Date;
 import java.util.*;
