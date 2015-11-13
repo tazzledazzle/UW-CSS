@@ -45,6 +45,7 @@ First, create a simple table using the following steps:
 For the next question you will be asked to create tables with attributes of types integer, varchar, date, and Boolean. However, SQL Lite does not have date and Boolean: you will use varchar and int instead:
 
 0 (false) and 1 (true) are the values used to interpret Booleans.
+
 Date strings in SQLite are in the form: 'YYYY-MM-DD'.
 Examples of valid date strings include: '1988-01-15', '0000-12-31', and '2011-03-28'.
 Examples of invalid date strings include: '11-11-01', '1900-1-20', '2011-03-5', and '2011-03-50'.
